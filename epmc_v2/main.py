@@ -34,7 +34,7 @@ class App(tb.Window):
 
 
 def main():
-  g.app = App(title="Easy PID Motor Controller (EPMC) Application", size=(900,650))
+  g.app = App(title="EPMC_V2 Setup Application", size=(900,650))
   g.app.mainloop()
 
 

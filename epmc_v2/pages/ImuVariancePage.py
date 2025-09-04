@@ -197,7 +197,9 @@ class ImuVarianceFrame(tb.Frame):
     self.ayVal.configure(text=f'{accy_variance}')
     self.azVal.configure(text=f'{accz_variance}')
 
-    # acc_variance = [ accx_variance, accy_variance, accz_variance]
+    acc_covariance = [ accx_variance, 0.0, 0.0, 0.0, accy_variance, 0.0, 0.0, 0.0, accz_variance]
+    print(colored("\nLinear Acceleration Covariance:", 'green'))
+    print(acc_covariance)
 
     gyrox_variance = np.var(self.gyrox_arr)
     gyroy_variance = np.var(self.gyroy_arr)
@@ -215,7 +217,9 @@ class ImuVarianceFrame(tb.Frame):
     self.gyVal.configure(text=f'{gyroy_variance}')
     self.gzVal.configure(text=f'{gyroz_variance}')
 
-    # gyro_variance = [ gyrox_variance, gyroy_variance, gyroz_variance]
+    gyro_covariance = [ gyrox_variance, 0.0, 0.0, 0.0, gyroy_variance, 0.0, 0.0, 0.0, gyroz_variance]
+    print(colored("\nAngular Velocity Covariance:", 'green'))
+    print(gyro_covariance)
 
   def compute_variance(self):
     if self.start_process:

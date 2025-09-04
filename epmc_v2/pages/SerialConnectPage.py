@@ -90,8 +90,8 @@ class SerialConnectFrame(tb.Frame):
     serIsConnected = self.connectToPort(port)
     if serIsConnected:
       # print("connection successful")
-      Messagebox.show_info(f"SUCCESS:\n\nEPMC Module found on port: {port}\n\nclick OK to continue", "SUCCESS")
+      Messagebox.show_info(f"SUCCESS:\n\nEPMC V2 Module found on port: {port}\n\nclick OK to continue", "SUCCESS")
       self.next_func()
     else:
       # print("Error connecting to driver")
-      Messagebox.show_error(f"ERROR:\n\nno EPMC Module found on port: {port}\n\ntry again or try another port", "ERROR")
+      Messagebox.show_error(f"ERROR:\n\nno EPMC V2 Module found on port: {port}\n\ntry again or try another port", "ERROR")
