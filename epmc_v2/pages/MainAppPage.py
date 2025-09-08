@@ -19,6 +19,7 @@ class MainAppFrame(tb.Frame):
     super().__init__(master=parentFrame)
 
     self.use_imu = int(g.epmcV2.getUseIMU())
+    print(self.use_imu)
 
     # SIDEBAR NAVIGATION FRAME
     self.sideNavFrame = tb.LabelFrame(self, borderwidth=10)
@@ -112,7 +113,7 @@ class MainAppFrame(tb.Frame):
     self.button7.configure(state="normal")
     self.button8.configure(state="normal")
     self.button9.configure(state="normal")
-    if(self.use_imu):
+    if(self.use_imu==1):
       self.button10.configure(state="normal")
       self.button11.configure(state="normal")
     else:
