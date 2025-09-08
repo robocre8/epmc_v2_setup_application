@@ -31,9 +31,7 @@ class ImuVarianceFrame(tb.Frame):
     self.ayValFrame = tb.Frame(self)
     self.azValFrame = tb.Frame(self)
 
-    ax = g.epmcV2.readAccVariance(0)
-    ay = g.epmcV2.readAccVariance(1)
-    az = g.epmcV2.readAccVariance(2)
+    ax, ay, az = g.epmcV2.readAccVariance()
 
     self.axText = tb.Label(self.axValFrame, text="AX-VARIANCE:", font=('Monospace',10, 'bold') ,bootstyle="danger")
     self.axVal = tb.Label(self.axValFrame, text=f'{ax}', font=('Monospace',10), bootstyle="dark")
@@ -48,9 +46,7 @@ class ImuVarianceFrame(tb.Frame):
     self.gyValFrame = tb.Frame(self)
     self.gzValFrame = tb.Frame(self)
 
-    gx = g.epmcV2.readGyroVariance(0)
-    gy = g.epmcV2.readGyroVariance(1)
-    gz = g.epmcV2.readGyroVariance(2)
+    gx, gy, gz = g.epmcV2.readGyroVariance()
 
     self.gxText = tb.Label(self.gxValFrame, text="GX-VARIANCE:", font=('Monospace',10, 'bold') ,bootstyle="danger")
     self.gxVal = tb.Label(self.gxValFrame, text=f'{gx}', font=('Monospace',10), bootstyle="dark")
@@ -142,9 +138,7 @@ class ImuVarianceFrame(tb.Frame):
       self.ayVal.configure(text="0.0")
       self.azVal.configure(text="0.0")
 
-      accx_cal = g.epmcV2.readAcc(0)
-      accy_cal = g.epmcV2.readAcc(1)
-      accz_cal = g.epmcV2.readAcc(2)
+      accx_cal, accy_cal, accz_cal = g.epmcV2.readAcc()
 
       self.accx_arr.append(accx_cal)
       self.accy_arr.append(accy_cal)
@@ -154,9 +148,7 @@ class ImuVarianceFrame(tb.Frame):
       self.gyVal.configure(text="0.0")
       self.gzVal.configure(text="0.0")
 
-      gyrox_cal = g.epmcV2.readGyro(0)
-      gyroy_cal = g.epmcV2.readGyro(1)
-      gyroz_cal = g.epmcV2.readGyro(2)
+      gyrox_cal, gyroy_cal, gyroz_cal = g.epmcV2.readGyro()
 
       self.gyrox_arr.append(gyrox_cal)
       self.gyroy_arr.append(gyroy_cal)
@@ -185,13 +177,9 @@ class ImuVarianceFrame(tb.Frame):
     accy_variance = np.var(self.accy_arr)
     accz_variance = np.var(self.accz_arr)
 
-    g.epmcV2.writeAccVariance(0, accx_variance)
-    g.epmcV2.writeAccVariance(1, accy_variance)
-    g.epmcV2.writeAccVariance(2, accz_variance)
+    g.epmcV2.writeAccVariance(accx_variance, accy_variance, accz_variance)
 
-    accx_variance = g.epmcV2.readAccVariance(0)
-    accy_variance = g.epmcV2.readAccVariance(1)
-    accz_variance = g.epmcV2.readAccVariance(2)
+    accx_variance, accy_variance, accz_variance = g.epmcV2.readAccVariance()
 
     self.axVal.configure(text=f'{accx_variance}')
     self.ayVal.configure(text=f'{accy_variance}')
@@ -205,13 +193,9 @@ class ImuVarianceFrame(tb.Frame):
     gyroy_variance = np.var(self.gyroy_arr)
     gyroz_variance = np.var(self.gyroz_arr)
 
-    g.epmcV2.writeGyroVariance(0, gyrox_variance)
-    g.epmcV2.writeGyroVariance(1, gyroy_variance)
-    g.epmcV2.writeGyroVariance(2, gyroz_variance)
+    g.epmcV2.writeGyroVariance(gyrox_variance, gyroy_variance, gyroz_variance)
 
-    gyrox_variance = g.epmcV2.readGyroVariance(0)
-    gyroy_variance = g.epmcV2.readGyroVariance(1)
-    gyroz_variance = g.epmcV2.readGyroVariance(2)
+    gyrox_variance, gyroy_variance, gyroz_variance = g.epmcV2.readGyroVariance()
 
     self.gxVal.configure(text=f'{gyrox_variance}')
     self.gyVal.configure(text=f'{gyroy_variance}')

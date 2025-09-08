@@ -227,43 +227,43 @@ class EPMC_V2_FULL:
     
     def readAcc(self):
         ax, ay, az, _ = self.read_data_stream(READ_ACC)
-        return ax, ay, az
+        return round(ax,6), round(ay,6), round(az,6)
     
     def readAccRaw(self):
         ax, ay, az, _ = self.read_data_stream(READ_ACC_RAW)
-        return ax, ay, az
+        return round(ax,6), round(ay,6), round(az,6)
     
     def readAccOffset(self):
         ax, ay, az, _ = self.read_data_stream(READ_ACC_OFF)
-        return ax, ay, az
+        return round(ax,6), round(ay,6), round(az,6)
     
     def readAccVariance(self):
         ax, ay, az, _ = self.read_data_stream(READ_ACC_VAR)
-        return ax, ay, az
+        return round(ax,6), round(ay,6), round(az,6)
     
     def writeAccOffset(self, ax, ay, az):
         res = self.write_data_stream(WRITE_ACC_OFF, ax, ay, az, 0.0)
         return res
     
     def writeAccVariance(self, ax, ay, az):
-        res = self.write_data_stream(WRITE_GYRO_OFF, ax, ay, az, 0.0)
+        res = self.write_data_stream(WRITE_ACC_VAR, ax, ay, az, 0.0)
         return res
     
     def readGyro(self):
         gx, gy, gz, _ = self.read_data_stream(READ_GYRO)
-        return gx, gy, gz
+        return round(gx,6), round(gy,6), round(gz,6)
     
     def readGyroRaw(self):
         gx, gy, gz, _ = self.read_data_stream(READ_GYRO_RAW)
-        return gx, gy, gz
+        return round(gx,6), round(gy,6), round(gz,6)
     
     def readGyroOffset(self):
         gx, gy, gz, _ = self.read_data_stream(READ_GYRO_OFF)
-        return gx, gy, gz
+        return round(gx,6), round(gy,6), round(gz,6)
     
     def readGyroVariance(self):
         gx, gy, gz, _ = self.read_data_stream(READ_GYRO_VAR)
-        return gx, gy, gz
+        return round(gx,6), round(gy,6), round(gz,6)
     
     def writeGyroOffset(self, gx, gy, gz):
         res = self.write_data_stream(WRITE_GYRO_OFF, gx, gy, gz, 0.0)
