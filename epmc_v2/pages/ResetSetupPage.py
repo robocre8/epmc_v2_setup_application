@@ -81,12 +81,8 @@ class ResetSetupFrame(tk.Frame):
   
   def activateIMU(self):
     isSuccessful = g.epmcV2.setUseIMU(1)
-    res = g.epmcV2.getUseIMU()
-    print(res, isSuccessful)
     return isSuccessful
   
   def deactivateIMU(self):
     isSuccessful = g.epmcV2.setUseIMU(0)
-    res = g.epmcV2.getUseIMU()
-    print(res, isSuccessful)
     return isSuccessful
