@@ -45,6 +45,8 @@ READ_GYRO_OFF = 0x26
 READ_GYRO_VAR = 0x27
 WRITE_GYRO_OFF = 0x28
 WRITE_GYRO_VAR = 0x29
+READ_MOTOR_DATA = 0x2A
+READ_IMU_DATA = 0x2B
 #---------------------------------------------
 
 
@@ -83,6 +85,16 @@ class EPMC_V2_FULL:
         a, b, c, d = struct.unpack('<ffff', payload)  # little-endian float
         return a, b, c, d
     
+    def read_packet6(self):
+        payload = self.ser.read(24)
+        a, b, c, d, e, f = struct.unpack('<ffffff', payload)  # little-endian float
+        return a, b, c, d, e, f
+    
+    def read_packet8(self):
+        payload = self.ser.read(32)
+        a, b, c, d, e, f, g, h = struct.unpack('<ffffffff', payload)  # little-endian float
+        return a, b, c, d, e, f, g, h
+    
     #---------------------------------------------------------------------
 
     def write_data1(self, cmd, pos, val):
@@ -118,6 +130,16 @@ class EPMC_V2_FULL:
         self.send_packet_without_payload(cmd)
         a, b, c, d = self.read_packet4()
         return a, b, c, d
+    
+    def read_data6(self, cmd):
+        self.send_packet_without_payload(cmd)
+        a, b, c, d, e, f = self.read_packet6()
+        return a, b, c, d, e, f
+    
+    def read_data8(self, cmd):
+        self.send_packet_without_payload(cmd)
+        a, b, c, d, e, f, g, h = self.read_packet8()
+        return a, b, c, d, e, f, g, h
         
     #---------------------------------------------------------------------
 
@@ -290,3 +312,11 @@ class EPMC_V2_FULL:
         return res
     
     #####################################################
+
+    def readMotorData(self):
+        pos0, pos1, pos2, pos3, v0, v1, v2, v3 = self.read_data8(READ_MOTOR_DATA)
+        return round(pos0,4), round(pos1,4), round(pos2,4), round(pos3,4), round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+    
+    def readImuData(self):
+        ax, ay, az, gx, gy, gz = self.read_data6(READ_IMU_DATA)
+        return round(ax,6), round(ay,6), round(az,6), round(gx,6), round(gy,6), round(gz,6)
