@@ -39,21 +39,57 @@ class CmdMotorFrame(tb.LabelFrame):
   def startForwardCommand(self, e):
     # print("start forward command")
     if int(g.motorDirConfig[self.motorNo]) == 1:
-      g.epmcV2.writePWM(self.motorNo, g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
+      if self.motorNo == 0:
+        g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0, 0, 0)
+      elif self.motorNo == 1:
+        g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo], 0, 0)
+      elif self.motorNo == 2:
+        g.epmcV2.writePWM(0, 0, g.motorTestPwm[self.motorNo], 0)
+      elif self.motorNo == 3:
+        g.epmcV2.writePWM(0, 0, 0, g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
     elif int(g.motorDirConfig[self.motorNo]) == -1:
-      g.epmcV2.writePWM(self.motorNo, -g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
+      if self.motorNo == 0:
+        g.epmcV2.writePWM(-g.motorTestPwm[self.motorNo], 0, 0, 0)
+      elif self.motorNo == 1:
+        g.epmcV2.writePWM(0, -g.motorTestPwm[self.motorNo], 0, 0)
+      elif self.motorNo == 2:
+        g.epmcV2.writePWM(0, 0, -g.motorTestPwm[self.motorNo], 0)
+      elif self.motorNo == 3:
+        g.epmcV2.writePWM(0, 0, 0, -g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
 
   def stopForwardCommand(self, e):
     # print("stop forward command")
-    g.epmcV2.writePWM(self.motorNo, 0)
+    g.epmcV2.writePWM(0, 0, 0, 0)
 
   def startReverseCommand(self, e):
     # print("start reverse command")
     if int(g.motorDirConfig[self.motorNo]) == 1:
-      g.epmcV2.writePWM(self.motorNo, -g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
+      if self.motorNo == 0:
+        g.epmcV2.writePWM(-g.motorTestPwm[self.motorNo], 0, 0, 0)
+      elif self.motorNo == 1:
+        g.epmcV2.writePWM(0, -g.motorTestPwm[self.motorNo], 0, 0)
+      elif self.motorNo == 2:
+        g.epmcV2.writePWM(0, 0, -g.motorTestPwm[self.motorNo], 0)
+      elif self.motorNo == 3:
+        g.epmcV2.writePWM(0, 0, 0, -g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
     elif int(g.motorDirConfig[self.motorNo]) == -1:
-      g.epmcV2.writePWM(self.motorNo, g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
+      if self.motorNo == 0:
+        g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0, 0, 0)
+      elif self.motorNo == 1:
+        g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo], 0, 0)
+      elif self.motorNo == 2:
+        g.epmcV2.writePWM(0, 0, g.motorTestPwm[self.motorNo], 0)
+      elif self.motorNo == 3:
+        g.epmcV2.writePWM(0, 0, 0, g.motorTestPwm[self.motorNo])
+      #---------------------------------------------------------------------#
 
   def stopReverseCommand(self, e):
     # print("stop reverse command")
-    g.epmcV2.writePWM(self.motorNo, 0)
+    g.epmcV2.writePWM(0, 0, 0, 0)
