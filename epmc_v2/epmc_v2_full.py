@@ -75,6 +75,11 @@ class EPMC_V2_FULL:
         a = struct.unpack('<f', payload)[0]  # little-endian float
         return a
     
+    def read_packet2(self):
+        payload = self.ser.read(8)
+        a, b = struct.unpack('<ff', payload)  # little-endian float
+        return a, b
+    
     def read_packet3(self):
         payload = self.ser.read(12)
         a, b, c = struct.unpack('<fff', payload)  # little-endian float
@@ -90,11 +95,6 @@ class EPMC_V2_FULL:
         a, b, c, d, e, f = struct.unpack('<ffffff', payload)  # little-endian float
         return a, b, c, d, e, f
     
-    def read_packet8(self):
-        payload = self.ser.read(32)
-        a, b, c, d, e, f, g, h = struct.unpack('<ffffffff', payload)  # little-endian float
-        return a, b, c, d, e, f, g, h
-    
     #---------------------------------------------------------------------
 
     def write_data1(self, cmd, pos, val):
@@ -109,6 +109,17 @@ class EPMC_V2_FULL:
         val = self.read_packet1()
         return val
     
+    def write_data2(self, cmd, a, b):
+        payload = struct.pack('<ff', a,b) 
+        self.send_packet_with_payload(cmd, payload)
+        val = self.read_packet1()
+        return val
+
+    def read_data2(self, cmd):
+        self.send_packet_without_payload(cmd)
+        a, b = self.read_packet2()
+        return a, b
+    
     def write_data3(self, cmd, a, b, c):
         payload = struct.pack('<fff', a,b,c) 
         self.send_packet_with_payload(cmd, payload)
@@ -120,12 +131,6 @@ class EPMC_V2_FULL:
         a, b, c = self.read_packet3()
         return a, b, c
 
-    def write_data4(self, cmd, a, b, c, d):
-        payload = struct.pack('<ffff', a,b,c,d) 
-        self.send_packet_with_payload(cmd, payload)
-        val = self.read_packet1()
-        return val
-
     def read_data4(self, cmd):
         self.send_packet_without_payload(cmd)
         a, b, c, d = self.read_packet4()
@@ -135,37 +140,32 @@ class EPMC_V2_FULL:
         self.send_packet_without_payload(cmd)
         a, b, c, d, e, f = self.read_packet6()
         return a, b, c, d, e, f
-    
-    def read_data8(self, cmd):
-        self.send_packet_without_payload(cmd)
-        a, b, c, d, e, f, g, h = self.read_packet8()
-        return a, b, c, d, e, f, g, h
         
     #---------------------------------------------------------------------
 
-    def writeSpeed(self, v0, v1, v2, v3):
-        res = self.write_data4(WRITE_VEL, v0, v1, v2, v3)
+    def writeSpeed(self, v0, v1):
+        res = self.write_data2(WRITE_VEL, v0, v1)
         return int(res)
     
-    def writePWM(self, v0, v1, v2, v3):
-        res = self.write_data4(WRITE_PWM, v0, v1, v2, v3)
+    def writePWM(self, v0, v1):
+        res = self.write_data2(WRITE_PWM, v0, v1)
         return int(res)
     
     def readPos(self):
-        pos0, pos1, pos2, pos3 = self.read_data4(READ_POS)
-        return round(pos0,4), round(pos1,4), round(pos2,4), round(pos3,4)
+        pos0, pos1 = self.read_data2(READ_POS)
+        return round(pos0,4), round(pos1,4)
     
     def readVel(self):
-        v0, v1, v2, v3 = self.read_data4(READ_VEL)
-        return round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+        v0, v1 = self.read_data2(READ_VEL)
+        return round(v0,6), round(v1,6)
     
     def readUVel(self):
-        v0, v1, v2, v3 = self.read_data4(READ_UVEL)
-        return round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+        v0, v1 = self.read_data2(READ_UVEL)
+        return round(v0,6), round(v1,6)
     
     def readTVel(self):
-        v0, v1, v2, v3 = self.read_data4(READ_TVEL)
-        return round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+        v0, v1 = self.read_data2(READ_TVEL)
+        return round(v0,6), round(v1,6)
     
     def setCmdTimeout(self, timeout):
         res = self.write_data1(SET_CMD_TIMEOUT, 0, timeout)
@@ -314,8 +314,8 @@ class EPMC_V2_FULL:
     #####################################################
 
     def readMotorData(self):
-        pos0, pos1, pos2, pos3, v0, v1, v2, v3 = self.read_data8(READ_MOTOR_DATA)
-        return round(pos0,4), round(pos1,4), round(pos2,4), round(pos3,4), round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+        pos0, pos1, v0, v1 = self.read_data4(READ_MOTOR_DATA)
+        return round(pos0,4), round(pos1,4), round(v0,6), round(v1,6)
     
     def readImuData(self):
         ax, ay, az, gx, gy, gz = self.read_data6(READ_IMU_DATA)

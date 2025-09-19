@@ -27,17 +27,11 @@ class GraphFrame(tb.Frame):
 
     #---------------------------------------------------------------------#
     if self.motorNo == 0:
-      g.motorActualVel[self.motorNo],_,_,_ = g.epmcV2.readTVel()
-      g.motorTargetVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
+      g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
+      g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
     elif self.motorNo == 1:
-      _,g.motorActualVel[self.motorNo],_,_ = g.epmcV2.readTVel()
-      _,g.motorTargetVel[self.motorNo],_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 2:
-      _,_,g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
-      _,_,g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
-    elif self.motorNo == 3:
-      _,_,_,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
-      _,_,_,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
+      _,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
+      _,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
     #---------------------------------------------------------------------#
 
     self.actualText = tb.Label(self.textFrame1, text="ACTUAL(rad/s):", font=('Monospace',10, 'bold') ,bootstyle="danger")
@@ -226,7 +220,7 @@ class GraphFrame(tb.Frame):
   def plot_graph(self):
       if self.doPlot and self.doPlotDuration < time.time()-self.doPlotTime:
           if g.motorIsOn[self.motorNo]:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
+            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0)
             if isSuccess:
               g.motorIsOn[self.motorNo] = False
               # print('Motor off', isSuccess)
@@ -252,13 +246,9 @@ class GraphFrame(tb.Frame):
           if not g.motorIsOn[self.motorNo]:
             #---------------------------------------------------------------------#
             if self.motorNo == 0:
-              isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
+              isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0)
             elif self.motorNo == 1:
-              isSuccess = g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
-            elif self.motorNo == 2:
-              isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
-            elif self.motorNo == 3:
-              isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
+              isSuccess = g.epmcV2.writeSpeed(0.0, targetVel)
             #---------------------------------------------------------------------#
 
             if isSuccess:
@@ -267,29 +257,19 @@ class GraphFrame(tb.Frame):
           
           #---------------------------------------------------------------------#
           if self.motorNo == 0:
-            isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
+            isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0)
           elif self.motorNo == 1:
-            isSuccess = g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
-          elif self.motorNo == 2:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
-          elif self.motorNo == 3:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
+            isSuccess = g.epmcV2.writeSpeed(0.0, targetVel)
           #---------------------------------------------------------------------#
 
           try:
             #---------------------------------------------------------------------#
             if self.motorNo == 0:
-              g.motorActualVel[self.motorNo],_,_,_ = g.epmcV2.readTVel()
-              g.motorTargetVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
+              g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
+              g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
             elif self.motorNo == 1:
-              _,g.motorActualVel[self.motorNo],_,_ = g.epmcV2.readTVel()
-              _,g.motorTargetVel[self.motorNo],_,_ = g.epmcV2.readVel()
-            elif self.motorNo == 2:
-              _,_,g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
-              _,_,g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
-            elif self.motorNo == 3:
-              _,_,_,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
-              _,_,_,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
+              _,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
+              _,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
             #---------------------------------------------------------------------#
             
           except:
@@ -326,7 +306,7 @@ class GraphFrame(tb.Frame):
 
       else:
           if g.motorIsOn[self.motorNo]:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
+            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0)
 
             if isSuccess:
               self.clearPlot = True

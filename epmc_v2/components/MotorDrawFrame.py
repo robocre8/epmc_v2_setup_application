@@ -30,17 +30,11 @@ class MotorDrawFrame(tb.Frame):
 
     #---------------------------------------------------------------------#
     if self.motorNo == 0:
-      g.motorAngPos[self.motorNo],_,_,_ = g.epmcV2.readPos()
-      g.motorAngVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
+      g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
+      g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
     elif self.motorNo == 1:
-      _,g.motorAngPos[self.motorNo],_,_ = g.epmcV2.readPos()
-      _,g.motorAngVel[self.motorNo],_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 2:
-      _,_,g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
-      _,_,g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
-    elif self.motorNo == 3:
-      _,_,_,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
-      _,_,_,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
+      _,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
+      _,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
     #---------------------------------------------------------------------#
       
 
@@ -97,7 +91,7 @@ class MotorDrawFrame(tb.Frame):
 
   def sendPwmCtrl(self):
     if g.motorIsOn[self.motorNo]:
-      isSuccess = g.epmcV2.writePWM(0,0,0,0)
+      isSuccess = g.epmcV2.writePWM(0, 0)
       if isSuccess:
         g.motorIsOn[self.motorNo] = False
         self.button2.configure(text="START MOTOR")
@@ -106,13 +100,9 @@ class MotorDrawFrame(tb.Frame):
       isSuccess = 0
       #---------------------------------------------------------------------#
       if self.motorNo == 0:
-        isSuccess = g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0, 0, 0)
+        isSuccess = g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0)
       elif self.motorNo == 1:
-        isSuccess = g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo], 0, 0)
-      elif self.motorNo == 2:
-        isSuccess = g.epmcV2.writePWM(0, 0, g.motorTestPwm[self.motorNo], 0)
-      elif self.motorNo == 3:
-        isSuccess = g.epmcV2.writePWM(0, 0, 0, g.motorTestPwm[self.motorNo])
+        isSuccess = g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo])
       #---------------------------------------------------------------------#
       if isSuccess:
         g.motorIsOn[self.motorNo] = True
@@ -124,7 +114,7 @@ class MotorDrawFrame(tb.Frame):
 
   def draw_motor_ang_pos(self):
     if g.motorIsOn[self.motorNo] and g.motorTestDuration[self.motorNo] < time.time()-g.motorStartTime[self.motorNo]:
-        isSuccess = g.epmcV2.writePWM(0, 0, 0, 0)
+        isSuccess = g.epmcV2.writePWM(0, 0)
         if isSuccess:
           g.motorIsOn[self.motorNo] = False
           self.button2.configure(text="START MOTOR")
@@ -135,17 +125,11 @@ class MotorDrawFrame(tb.Frame):
     try:
       #---------------------------------------------------------------------#
       if self.motorNo == 0:
-        g.motorAngPos[self.motorNo],_,_,_ = g.epmcV2.readPos()
-        g.motorAngVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
+        g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
+        g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
       elif self.motorNo == 1:
-        _,g.motorAngPos[self.motorNo],_,_ = g.epmcV2.readPos()
-        _,g.motorAngVel[self.motorNo],_,_ = g.epmcV2.readVel()
-      elif self.motorNo == 2:
-        _,_,g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
-        _,_,g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
-      elif self.motorNo == 3:
-        _,_,_,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
-        _,_,_,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
+        _,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
+        _,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
       #---------------------------------------------------------------------#
       
     except:

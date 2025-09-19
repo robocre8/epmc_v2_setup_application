@@ -47,18 +47,6 @@ class MainAppFrame(tb.Frame):
     self.button4 = tb.Button(self.sideNavFrame, text="MOTOR 1 PID", style=buttonStyleName,
                              command= lambda: self.displayPage(self.button4, self.displayMotor1PidSetupPage))
     
-    self.button5 = tb.Button(self.sideNavFrame, text="MOTOR 2 ENC", style=buttonStyleName,
-                             command= lambda: self.displayPage(self.button5, self.displayMotor2EncSetupPage))
-    
-    self.button6 = tb.Button(self.sideNavFrame, text="MOTOR 2 PID", style=buttonStyleName,
-                             command= lambda: self.displayPage(self.button6, self.displayMotor2PidSetupPage))
-    
-    self.button7 = tb.Button(self.sideNavFrame, text="MOTOR 3 ENC", style=buttonStyleName,
-                             command= lambda: self.displayPage(self.button7, self.displayMotor3EncSetupPage))
-    
-    self.button8 = tb.Button(self.sideNavFrame, text="MOTOR 3 PID", style=buttonStyleName,
-                             command= lambda: self.displayPage(self.button8, self.displayMotor3PidSetupPage))
-    
     self.button9 = tb.Button(self.sideNavFrame, text="CONFIG / RST", style=buttonStyleName,
                              command= lambda: self.displayPage(self.button9, self.displayResetPage))
     
@@ -79,10 +67,6 @@ class MainAppFrame(tb.Frame):
     self.button2.pack(side="top", fill="x", padx=5, pady=(0,menu_padding))
     self.button3.pack(side="top", fill="x", padx=5, pady=0)
     self.button4.pack(side="top", fill="x", padx=5, pady=(0,menu_padding))
-    self.button5.pack(side="top", fill="x", padx=5, pady=0)
-    self.button6.pack(side="top", fill="x", padx=5, pady=(0,menu_padding))
-    self.button7.pack(side="top", fill="x", padx=5, pady=0)
-    self.button8.pack(side="top", fill="x", padx=5, pady=(0,menu_padding))
     self.button9.pack(side="top", fill="x", padx=5, pady=0)
     if (self.use_imu==1):
       self.button10.pack(side="top", fill="x", padx=5, pady=(menu_padding,0))
@@ -108,10 +92,6 @@ class MainAppFrame(tb.Frame):
     self.button2.configure(state="normal")
     self.button3.configure(state="normal")
     self.button4.configure(state="normal")
-    self.button5.configure(state="normal")
-    self.button6.configure(state="normal")
-    self.button7.configure(state="normal")
-    self.button8.configure(state="normal")
     self.button9.configure(state="normal")
     if(self.use_imu==1):
       self.button10.configure(state="normal")
@@ -147,22 +127,6 @@ class MainAppFrame(tb.Frame):
   def displayMotor1PidSetupPage(self):
     self.motor1PidSetupFrame = PidSetupFrame(self.mainContentFrame, motorNo=1)
     self.motor1PidSetupFrame.pack(side="left", expand=True, fill="both")
-
-  def displayMotor2EncSetupPage(self):
-    self.motor2EncSetupFrame = EncSetupFrame(self.mainContentFrame, motorNo=2)
-    self.motor2EncSetupFrame.pack(side="left", expand=True, fill="both")
-
-  def displayMotor2PidSetupPage(self):
-    self.motor2PidSetupFrame = PidSetupFrame(self.mainContentFrame, motorNo=2)
-    self.motor2PidSetupFrame.pack(side="left", expand=True, fill="both")
-
-  def displayMotor3EncSetupPage(self):
-    self.motor3EncSetupFrame = EncSetupFrame(self.mainContentFrame, motorNo=3)
-    self.motor3EncSetupFrame.pack(side="left", expand=True, fill="both")
-
-  def displayMotor3PidSetupPage(self):
-    self.motor3PidSetupFrame = PidSetupFrame(self.mainContentFrame, motorNo=3)
-    self.motor3PidSetupFrame.pack(side="left", expand=True, fill="both")
 
   def displayResetPage(self):
     self.resetFrame = ResetSetupFrame(self.mainContentFrame)
