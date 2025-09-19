@@ -222,29 +222,29 @@ class ImuCalibrateFrame(tb.Frame):
     t = np.linspace(0, len(self.acc_x), len(self.acc_x))
 
 
-    # plot uncalibrated data
+    # plot uncalibrated acc data
     accUncal.plot(t, self.acc_x, color='r')
     accUncal.plot(t, self.acc_y, color='g')
     accUncal.plot(t, self.acc_z, color='b')
     accUncal.title.set_text("Uncalibrated Acc")
-    accUncal.set(ylabel='g')
+    accUncal.set(ylabel='m/s^2')
 
     accUncal.grid(which = "major", linewidth = 0.5)
     accUncal.grid(which = "minor", linewidth = 0.2)
     accUncal.minorticks_on()
 
-    # plot calibrated data
+    # plot calibrated acc data
     accCal.plot(t, [x - acc_calibration[0] for x in self.acc_x], color='r')
     accCal.plot(t, [y - acc_calibration[1] for y in self.acc_y], color='g')
     accCal.plot(t, [z - acc_calibration[2] for z in self.acc_z], color='b')
     accCal.title.set_text("Calibrated Acc")
-    accCal.set(ylabel='g')
+    accCal.set(ylabel='m/s^2')
 
     accCal.grid(which = "major", linewidth = 0.5)
     accCal.grid(which = "minor", linewidth = 0.2)
     accCal.minorticks_on()
 
-    # plot uncalibrated data
+    # plot uncalibrated gyro data
     gyroUncal.set_ylim([-1,1])
     gyroUncal.grid(which = "major", linewidth = 0.5)
     gyroUncal.grid(which = "minor", linewidth = 0.2)
@@ -256,7 +256,7 @@ class ImuCalibrateFrame(tb.Frame):
     gyroUncal.title.set_text("Uncalibrated Gyro")
     gyroUncal.set(ylabel='rad/s')
 
-    # plot calibrated data
+    # plot calibrated gyro data
     gyroCal.set_ylim([-1,1])
     gyroCal.grid(which = "major", linewidth = 0.5)
     gyroCal.grid(which = "minor", linewidth = 0.2)
