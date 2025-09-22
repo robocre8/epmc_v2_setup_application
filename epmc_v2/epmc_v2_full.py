@@ -31,22 +31,7 @@ GET_CMD_TIMEOUT = 0x18
 SET_I2C_ADDR = 0x19
 GET_I2C_ADDR = 0x1A
 RESET_PARAMS = 0x1B
-SET_USE_IMU = 0x1C
-GET_USE_IMU = 0x1D
-READ_ACC = 0x1E
-READ_ACC_RAW = 0x1F
-READ_ACC_OFF = 0x20
-READ_ACC_VAR = 0x21
-WRITE_ACC_OFF = 0x22
-WRITE_ACC_VAR = 0x23
-READ_GYRO = 0x24
-READ_GYRO_RAW = 0x25
-READ_GYRO_OFF = 0x26
-READ_GYRO_VAR = 0x27
-WRITE_GYRO_OFF = 0x28
-WRITE_GYRO_VAR = 0x29
 READ_MOTOR_DATA = 0x2A
-READ_IMU_DATA = 0x2B
 #---------------------------------------------
 
 
@@ -255,68 +240,6 @@ class EPMC_V2_FULL:
 
     ###################################################
 
-    def setUseIMU(self, val):
-        res = self.write_data1(SET_USE_IMU, 0, val)
-        return int(res)
-    
-    def getUseIMU(self):
-        val = self.read_data1(GET_USE_IMU, 0)
-        return val
-    
-    def readAcc(self):
-        ax, ay, az = self.read_data3(READ_ACC)
-        return round(ax,6), round(ay,6), round(az,6)
-    
-    def readAccRaw(self):
-        ax, ay, az = self.read_data3(READ_ACC_RAW)
-        return round(ax,6), round(ay,6), round(az,6)
-    
-    def readAccOffset(self):
-        ax, ay, az = self.read_data3(READ_ACC_OFF)
-        return round(ax,6), round(ay,6), round(az,6)
-    
-    def readAccVariance(self):
-        ax, ay, az = self.read_data3(READ_ACC_VAR)
-        return round(ax,6), round(ay,6), round(az,6)
-    
-    def writeAccOffset(self, ax, ay, az):
-        res = self.write_data3(WRITE_ACC_OFF, ax, ay, az)
-        return res
-    
-    def writeAccVariance(self, ax, ay, az):
-        res = self.write_data3(WRITE_ACC_VAR, ax, ay, az)
-        return res
-    
-    def readGyro(self):
-        gx, gy, gz = self.read_data3(READ_GYRO)
-        return round(gx,6), round(gy,6), round(gz,6)
-    
-    def readGyroRaw(self):
-        gx, gy, gz = self.read_data3(READ_GYRO_RAW)
-        return round(gx,6), round(gy,6), round(gz,6)
-    
-    def readGyroOffset(self):
-        gx, gy, gz = self.read_data3(READ_GYRO_OFF)
-        return round(gx,6), round(gy,6), round(gz,6)
-    
-    def readGyroVariance(self):
-        gx, gy, gz = self.read_data3(READ_GYRO_VAR)
-        return round(gx,6), round(gy,6), round(gz,6)
-    
-    def writeGyroOffset(self, gx, gy, gz):
-        res = self.write_data3(WRITE_GYRO_OFF, gx, gy, gz)
-        return res
-    
-    def writeGyroVariance(self, gx, gy, gz):
-        res = self.write_data3(WRITE_GYRO_VAR, gx, gy, gz)
-        return res
-    
-    #####################################################
-
     def readMotorData(self):
         pos0, pos1, pos2, pos3, v0, v1, v2, v3 = self.read_data8(READ_MOTOR_DATA)
         return round(pos0,4), round(pos1,4), round(pos2,4), round(pos3,4), round(v0,6), round(v1,6), round(v2,6), round(v3,6)
-    
-    def readImuData(self):
-        ax, ay, az, gx, gy, gz = self.read_data6(READ_IMU_DATA)
-        return round(ax,6), round(ay,6), round(az,6), round(gx,6), round(gy,6), round(gz,6)
