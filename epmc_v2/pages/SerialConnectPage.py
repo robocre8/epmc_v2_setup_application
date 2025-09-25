@@ -73,6 +73,7 @@ class SerialConnectFrame(tb.Frame):
       g.epmcV2 = EPMC_V2_FULL(port)
       time.sleep(1)
       g.epmcV2.setCmdTimeout(0)
+      g.epmcV2.clearDataBuffer()
       return True
     except:
       return False

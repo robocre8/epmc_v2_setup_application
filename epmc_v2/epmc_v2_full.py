@@ -32,6 +32,7 @@ SET_I2C_ADDR = 0x19
 GET_I2C_ADDR = 0x1A
 RESET_PARAMS = 0x1B
 READ_MOTOR_DATA = 0x2A
+CLEAR_DATA_BUFFER = 0x2B
 #---------------------------------------------
 
 
@@ -167,6 +168,10 @@ class EPMC_V2_FULL:
     def getPidMode(self, motor_no):
         mode = self.read_data1(GET_CMD_TIMEOUT, motor_no)
         return int(mode)
+    
+    def clearDataBuffer(self):
+        res = self.write_data1(CLEAR_DATA_BUFFER, 0, 0.0)
+        return int(res)
     
     #---------------------------------------------------------------------
 
