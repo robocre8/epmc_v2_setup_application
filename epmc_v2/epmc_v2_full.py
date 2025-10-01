@@ -30,9 +30,30 @@ SET_CMD_TIMEOUT = 0x17
 GET_CMD_TIMEOUT = 0x18
 SET_I2C_ADDR = 0x19
 GET_I2C_ADDR = 0x1A
-RESET_PARAMS = 0x1B
+RESET_PARAMS = 0x1B;
+SET_USE_IMU = 0x1C;
+GET_USE_IMU = 0x1D;
+READ_ACC = 0x1E;
+READ_ACC_RAW = 0x1F
+READ_ACC_OFF = 0x20
+READ_ACC_VAR = 0x21
+WRITE_ACC_OFF = 0x22
+WRITE_ACC_VAR = 0x23
+READ_GYRO = 0x24
+READ_GYRO_RAW = 0x25
+READ_GYRO_OFF = 0x26
+READ_GYRO_VAR = 0x27
+WRITE_GYRO_OFF = 0x28
+WRITE_GYRO_VAR = 0x29
 READ_MOTOR_DATA = 0x2A
-CLEAR_DATA_BUFFER = 0x2B
+READ_IMU_DATA = 0x2B
+CLEAR_DATA_BUFFER = 0x2C
+READ_RPY = 0x2D
+READ_RPY_VAR = 0x2E
+WRITE_RPY_VAR = 0x2F
+READ_YAW_WITH_DRIFT = 0x30
+READ_YAW_VEL_DRIFT_BIAS = 0x31
+WRITE_YAW_VEL_DRIFT_BIAS = 0x32
 #---------------------------------------------
 
 
@@ -81,6 +102,11 @@ class EPMC_V2_FULL:
         a, b, c, d, e, f, g, h = struct.unpack('<ffffffff', payload)  # little-endian float
         return a, b, c, d, e, f, g, h
     
+    def read_packet9(self):
+        payload = self.ser.read(36)
+        a, b, c, d, e, f, g, h, i = struct.unpack('<fffffffff', payload)  # little-endian float
+        return a, b, c, d, e, f, g, h, i
+    
     #---------------------------------------------------------------------
 
     def write_data1(self, cmd, pos, val):
@@ -126,6 +152,11 @@ class EPMC_V2_FULL:
         self.send_packet_without_payload(cmd)
         a, b, c, d, e, f, g, h = self.read_packet8()
         return a, b, c, d, e, f, g, h
+    
+    def read_data9(self, cmd):
+        self.send_packet_without_payload(cmd)
+        a, b, c, d, e, f, g, h, i = self.read_packet9()
+        return a, b, c, d, e, f, g, h, i
         
     #---------------------------------------------------------------------
 
@@ -243,8 +274,98 @@ class EPMC_V2_FULL:
         res = self.write_data1(RESET_PARAMS, 0, 0.0)
         return int(res)
 
-    ###################################################
+    #------------------------------------------------------
 
     def readMotorData(self):
         pos0, pos1, pos2, pos3, v0, v1, v2, v3 = self.read_data8(READ_MOTOR_DATA)
         return round(pos0,4), round(pos1,4), round(pos2,4), round(pos3,4), round(v0,6), round(v1,6), round(v2,6), round(v3,6)
+    
+    #------------------------------------------------------------
+
+    def setUseIMU(self, val):
+        res = self.write_data1(SET_USE_IMU, 0, val)
+        return int(res)
+    
+    def getUseIMU(self):
+        val = self.read_data1(GET_USE_IMU, 0)
+        return val
+
+    def readRPY(self):
+        r, p, y = self.read_data3(READ_RPY)
+        return round(r,6), round(p,6), round(y,6)
+    
+    def readRPYVariance(self):
+        r, p, y = self.read_data3(READ_RPY_VAR)
+        return round(r,8), round(p,8), round(y,8)
+    
+    def readAcc(self):
+        ax, ay, az = self.read_data3(READ_ACC)
+        return round(ax,6), round(ay,6), round(az,6)
+    
+    def readAccVariance(self):
+        ax, ay, az = self.read_data3(READ_ACC_VAR)
+        return round(ax,8), round(ay,8), round(az,8)
+    
+    def readGyro(self):
+        gx, gy, gz = self.read_data3(READ_GYRO)
+        return round(gx,6), round(gy,6), round(gz,6)
+    
+    def readGyroVariance(self):
+        gx, gy, gz = self.read_data3(READ_GYRO_VAR)
+        return round(gx,8), round(gy,8), round(gz,8)
+    
+    def readImuData(self):
+        r, p, y, ax, ay, az, gx, gy, gz = self.read_data9(READ_IMU_DATA)
+        return round(r,6), round(p,6), round(y,6), round(ax,6), round(ay,6), round(az,6), round(gx,6), round(gy,6), round(gz,6)
+    
+    def readYawWithDrift(self):
+        gain = self.read_data1(READ_YAW_WITH_DRIFT, 0)
+        return round(gain,8)
+    
+    def readYawVelDriftBias(self):
+        gain = self.read_data1(READ_YAW_VEL_DRIFT_BIAS, 0)
+        return round(gain,8)
+    
+    def writeYawVelDriftBias(self, val):
+        res = self.write_data1(WRITE_YAW_VEL_DRIFT_BIAS, 0, val)
+        return int(res)
+    
+    #------------------------------------------------------
+    
+    def writeRPYVariance(self, r, p, y):
+        res = self.write_data3(WRITE_RPY_VAR, r, p, y)
+        return int(res)
+    
+    def readAccRaw(self):
+        ax, ay, az = self.read_data3(READ_ACC_RAW)
+        return round(ax,6), round(ay,6), round(az,6)
+    
+    def readAccOffset(self):
+        ax, ay, az = self.read_data3(READ_ACC_OFF)
+        return round(ax,6), round(ay,6), round(az,6)
+    
+    def writeAccOffset(self, ax, ay, az):
+        res = self.write_data3(WRITE_ACC_OFF, ax, ay, az)
+        return int(res)
+    
+    def writeAccVariance(self, ax, ay, az):
+        res = self.write_data3(WRITE_ACC_VAR, ax, ay, az)
+        return int(res)
+    
+    def readGyroRaw(self):
+        gx, gy, gz = self.read_data3(READ_GYRO_RAW)
+        return round(gx,6), round(gy,6), round(gz,6)
+    
+    def readGyroOffset(self):
+        gx, gy, gz = self.read_data3(READ_GYRO_OFF)
+        return round(gx,6), round(gy,6), round(gz,6)
+    
+    def writeGyroOffset(self, gx, gy, gz):
+        res = self.write_data3(WRITE_GYRO_OFF, gx, gy, gz)
+        return int(res)
+    
+    def writeGyroVariance(self, gx, gy, gz):
+        res = self.write_data3(WRITE_GYRO_VAR, gx, gy, gz)
+        return int(res)
+    
+    #------------------------------------------------------------
