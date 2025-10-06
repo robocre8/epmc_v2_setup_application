@@ -97,37 +97,32 @@ class MotorDrawFrame(tb.Frame):
 
   def sendPwmCtrl(self):
     if g.motorIsOn[self.motorNo]:
-      isSuccess = g.epmcV2.writePWM(0,0,0,0)
-      if isSuccess:
-        g.motorIsOn[self.motorNo] = False
-        self.button2.configure(text="START MOTOR")
+      g.epmcV2.writePWM(0,0,0,0)
+      self.button2.configure(text="START MOTOR")
 
     else:
-      isSuccess = 0
       #---------------------------------------------------------------------#
       if self.motorNo == 0:
-        isSuccess = g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0, 0, 0)
+        g.epmcV2.writePWM(g.motorTestPwm[self.motorNo], 0, 0, 0)
       elif self.motorNo == 1:
-        isSuccess = g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo], 0, 0)
+        g.epmcV2.writePWM(0, g.motorTestPwm[self.motorNo], 0, 0)
       elif self.motorNo == 2:
-        isSuccess = g.epmcV2.writePWM(0, 0, g.motorTestPwm[self.motorNo], 0)
+        g.epmcV2.writePWM(0, 0, g.motorTestPwm[self.motorNo], 0)
       elif self.motorNo == 3:
-        isSuccess = g.epmcV2.writePWM(0, 0, 0, g.motorTestPwm[self.motorNo])
+        g.epmcV2.writePWM(0, 0, 0, g.motorTestPwm[self.motorNo])
       #---------------------------------------------------------------------#
-      if isSuccess:
-        g.motorIsOn[self.motorNo] = True
-        g.motorStartTime[self.motorNo] = time.time()
-        self.button2.configure(text="STOP MOTOR")
+      g.motorIsOn[self.motorNo] = True
+      g.motorStartTime[self.motorNo] = time.time()
+      self.button2.configure(text="STOP MOTOR")
 
 
 
 
   def draw_motor_ang_pos(self):
     if g.motorIsOn[self.motorNo] and g.motorTestDuration[self.motorNo] < time.time()-g.motorStartTime[self.motorNo]:
-        isSuccess = g.epmcV2.writePWM(0, 0, 0, 0)
-        if isSuccess:
-          g.motorIsOn[self.motorNo] = False
-          self.button2.configure(text="START MOTOR")
+        g.epmcV2.writePWM(0, 0, 0, 0)
+        g.motorIsOn[self.motorNo] = False
+        self.button2.configure(text="START MOTOR")
 
     self.canvas.delete(self.line)
     self.canvas.delete(self.mid_circle)

@@ -226,10 +226,9 @@ class GraphFrame(tb.Frame):
   def plot_graph(self):
       if self.doPlot and self.doPlotDuration < time.time()-self.doPlotTime:
           if g.motorIsOn[self.motorNo]:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
-            if isSuccess:
-              g.motorIsOn[self.motorNo] = False
-              # print('Motor off', isSuccess)
+            g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
+            g.motorIsOn[self.motorNo] = False
+            # print('Motor off', isSuccess)
           self.doPlot = False 
           self.clearPlot = True
           self.plotButton.configure(text='CLEAR PLOT')
@@ -252,28 +251,27 @@ class GraphFrame(tb.Frame):
           if not g.motorIsOn[self.motorNo]:
             #---------------------------------------------------------------------#
             if self.motorNo == 0:
-              isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
+              g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
             elif self.motorNo == 1:
-              isSuccess = g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
+              g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
             elif self.motorNo == 2:
-              isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
+              g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
             elif self.motorNo == 3:
-              isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
+              g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
             #---------------------------------------------------------------------#
 
-            if isSuccess:
-              g.motorIsOn[self.motorNo] = True
-              # print('Motor on', isSuccess)
+            g.motorIsOn[self.motorNo] = True
+            # print('Motor on', isSuccess)
           
           #---------------------------------------------------------------------#
           if self.motorNo == 0:
-            isSuccess = g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
+            g.epmcV2.writeSpeed(targetVel, 0.0, 0.0, 0.0)
           elif self.motorNo == 1:
-            isSuccess = g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
+            g.epmcV2.writeSpeed(0.0, targetVel, 0.0, 0.0)
           elif self.motorNo == 2:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
+            g.epmcV2.writeSpeed(0.0, 0.0, targetVel, 0.0)
           elif self.motorNo == 3:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
+            g.epmcV2.writeSpeed(0.0, 0.0, 0.0, targetVel)
           #---------------------------------------------------------------------#
 
           try:
@@ -326,13 +324,11 @@ class GraphFrame(tb.Frame):
 
       else:
           if g.motorIsOn[self.motorNo]:
-            isSuccess = g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
-
-            if isSuccess:
-              self.clearPlot = True
-              self.plotButton.configure(text='CLEAR PLOT')
-              g.motorIsOn[self.motorNo] = False
-              # print('Motor off', isSuccess)
+            g.epmcV2.writeSpeed(0.0, 0.0, 0.0, 0.0)
+            self.clearPlot = True
+            self.plotButton.configure(text='CLEAR PLOT')
+            g.motorIsOn[self.motorNo] = False
+            # print('Motor off', isSuccess)
           self.currValA = 0.0
           self.prevValA = 0.0
           self.currValB = 0.0
