@@ -29,18 +29,10 @@ class MotorDrawFrame(tb.Frame):
     buttonStyle.configure(buttonStyleName, font=('Monospace',10, 'bold'))
 
     #---------------------------------------------------------------------#
-    if self.motorNo == 0:
-      g.motorAngPos[self.motorNo],_,_,_ = g.epmcV2.readPos()
-      g.motorAngVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 1:
-      _,g.motorAngPos[self.motorNo],_,_ = g.epmcV2.readPos()
-      _,g.motorAngVel[self.motorNo],_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 2:
-      _,_,g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
-      _,_,g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
-    elif self.motorNo == 3:
-      _,_,_,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
-      _,_,_,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
+    isSuccessful, pos_arr = g.epmcV2.readPos()
+    isSuccessful, vel_arr = g.epmcV2.readVel()
+    g.motorAngPos[self.motorNo] = round(pos_arr[self.motorNo],2)
+    g.motorAngVel[self.motorNo] = round(vel_arr[self.motorNo],4)
     #---------------------------------------------------------------------#
       
 
@@ -129,18 +121,10 @@ class MotorDrawFrame(tb.Frame):
 
     try:
       #---------------------------------------------------------------------#
-      if self.motorNo == 0:
-        g.motorAngPos[self.motorNo],_,_,_ = g.epmcV2.readPos()
-        g.motorAngVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
-      elif self.motorNo == 1:
-        _,g.motorAngPos[self.motorNo],_,_ = g.epmcV2.readPos()
-        _,g.motorAngVel[self.motorNo],_,_ = g.epmcV2.readVel()
-      elif self.motorNo == 2:
-        _,_,g.motorAngPos[self.motorNo],_ = g.epmcV2.readPos()
-        _,_,g.motorAngVel[self.motorNo],_ = g.epmcV2.readVel()
-      elif self.motorNo == 3:
-        _,_,_,g.motorAngPos[self.motorNo] = g.epmcV2.readPos()
-        _,_,_,g.motorAngVel[self.motorNo] = g.epmcV2.readVel()
+      isSuccessful, pos_arr = g.epmcV2.readPos()
+      isSuccessful, vel_arr = g.epmcV2.readVel()
+      g.motorAngPos[self.motorNo] = round(pos_arr[self.motorNo],2)
+      g.motorAngVel[self.motorNo] = round(vel_arr[self.motorNo],4)
       #---------------------------------------------------------------------#
       
     except:

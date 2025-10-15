@@ -26,18 +26,10 @@ class GraphFrame(tb.Frame):
     buttonStyle.configure(buttonStyleName, font=('Monospace',9, 'bold'))
 
     #---------------------------------------------------------------------#
-    if self.motorNo == 0:
-      g.motorActualVel[self.motorNo],_,_,_ = g.epmcV2.readTVel()
-      g.motorTargetVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 1:
-      _,g.motorActualVel[self.motorNo],_,_ = g.epmcV2.readTVel()
-      _,g.motorTargetVel[self.motorNo],_,_ = g.epmcV2.readVel()
-    elif self.motorNo == 2:
-      _,_,g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
-      _,_,g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
-    elif self.motorNo == 3:
-      _,_,_,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
-      _,_,_,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
+    isSuccessful, tvel_arr = g.epmcV2.readTVel()
+    isSuccessful, vel_arr = g.epmcV2.readVel()
+    g.motorTargetVel[self.motorNo] = round(tvel_arr[self.motorNo],4)
+    g.motorActualVel[self.motorNo] = round(vel_arr[self.motorNo],4)
     #---------------------------------------------------------------------#
 
     self.actualText = tb.Label(self.textFrame1, text="ACTUAL(rad/s):", font=('Monospace',10, 'bold') ,bootstyle="danger")
@@ -198,17 +190,17 @@ class GraphFrame(tb.Frame):
         self.deletePlot(self.plotLineBufferA, self.plotLineBufferB)
         self.plotButton.configure(text='START PLOT')
         self.clearPlot = False
-        # g.epmcV2.setPidMode(self.motorNo, 0)
+        # isSussessful = g.epmcV2.setPidMode(self.motorNo, 0)
         time.sleep(0.1)
 
     elif self.doPlot:
         self.doPlot = False 
-        # g.epmcV2.setPidMode(self.motorNo, 0)
+        # isSussessful = g.epmcV2.setPidMode(self.motorNo, 0)
         # print('stop plot')
     else:
         self.doPlot = True 
         self.doPlotTime = time.time()
-        # g.epmcV2.setPidMode(self.motorNo, 1)
+        # isSussessful = g.epmcV2.setPidMode(self.motorNo, 1)
         # print('start plot')
 
 
@@ -276,18 +268,10 @@ class GraphFrame(tb.Frame):
 
           try:
             #---------------------------------------------------------------------#
-            if self.motorNo == 0:
-              g.motorActualVel[self.motorNo],_,_,_ = g.epmcV2.readTVel()
-              g.motorTargetVel[self.motorNo],_,_,_ = g.epmcV2.readVel()
-            elif self.motorNo == 1:
-              _,g.motorActualVel[self.motorNo],_,_ = g.epmcV2.readTVel()
-              _,g.motorTargetVel[self.motorNo],_,_ = g.epmcV2.readVel()
-            elif self.motorNo == 2:
-              _,_,g.motorActualVel[self.motorNo],_ = g.epmcV2.readTVel()
-              _,_,g.motorTargetVel[self.motorNo],_ = g.epmcV2.readVel()
-            elif self.motorNo == 3:
-              _,_,_,g.motorActualVel[self.motorNo] = g.epmcV2.readTVel()
-              _,_,_,g.motorTargetVel[self.motorNo] = g.epmcV2.readVel()
+            isSuccessful, tvel_arr = g.epmcV2.readTVel()
+            isSuccessful, vel_arr = g.epmcV2.readVel()
+            g.motorTargetVel[self.motorNo] = round(tvel_arr[self.motorNo],4)
+            g.motorActualVel[self.motorNo] = round(vel_arr[self.motorNo],4)
             #---------------------------------------------------------------------#
             
           except:
